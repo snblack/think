@@ -1,6 +1,5 @@
 class Question < ApplicationRecord
-  belongs_to :test
-  has_many :answers
+  has_many :answers, dependent: :delete_all
 
   validates :title, :body, presence: true
 end
