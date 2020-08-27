@@ -7,7 +7,6 @@ feature 'user can browse question and answers of question' do
     question.answers.create(body: 'test')
 
     visit question_path(question)
-    save_and_open_page
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
