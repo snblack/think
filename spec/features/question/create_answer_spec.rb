@@ -11,11 +11,10 @@ feature 'user can create answer for question', %q{
     user = create(:user)
     sign_in(user)
 
-    question = create(:question)
+    question = user.questions.create(title: 'MyTitle', body: 'MyBody')
     visit question_path(question)
 
     click_on 'to answer'
-
     fill_in 'Body', with: "text text text"
     click_on 'Post your answer'
 

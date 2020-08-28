@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :answer do
+    user
     body { "MyString" }
 
     trait :invalid do
