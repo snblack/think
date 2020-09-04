@@ -1,5 +1,14 @@
 h1= 'List of questions'
-- @questions.each do |q|
-    p= "#{q.title} #{q.body}"
+
+table
+  thead
+    th= 'Вопросы'
+    th= 'Действия'
+  tbody
+    - @questions.each do |question|
+      tr
+      td= "#{question.title} #{question.body}"
+      td= link_to 'show', question_path(question)
+
 
 p= link_to 'Ask question', new_question_path

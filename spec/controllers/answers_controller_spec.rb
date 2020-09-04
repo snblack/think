@@ -16,22 +16,22 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves a new answer in the database' do
-        expect { post :create, params: { answer: attributes_for(:answer), user: user, question_id: question.id} }.to change(Answer, :count).by(1)
+        expect { post :create, params: { answer: attributes_for(:answer), user: user, question_id: question.id} }.to change(question.answers, :count).by(1)
       end
       it 'redirects to show view' do
         post :create, params: { answer: attributes_for(:answer), question_id: question.id}
         expect(response).to redirect_to assigns(:question)
+      end
+      'тут нужен еще один тест, на связь созданного ответа и залогиненного юзера'
+      it 'created answer belong to current_user' do
+        post :create, params: { answer: attributes_for(:answer), question_id: question.id}
+        expect(assigns(:answer).user).to eq subject.current_user
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the answer' do
         expect { post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question.id} }.to_not change(Answer, :count)
-      end
-
-      it 're-renders new show' do
-        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: question.id}
-        expect(response).to render_template :new
       end
     end
   end

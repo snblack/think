@@ -6,11 +6,13 @@ class QuestionsController < ApplicationController
   end
 
   def show
-
+    @question = Question.find(params[:id])
+    @answer = @question.answers.new
   end
 
   def new
     @question = Question.new
+    @answer = @question.answers.new
   end
 
   def edit
@@ -36,7 +38,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.id ==  question.user_id
+    if current_user.author_of?(question)
       question.destroy
       redirect_to questions_path, notice: 'Question deleted'
     else

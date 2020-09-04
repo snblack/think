@@ -23,6 +23,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'Get #show' do
     before {get :show, params: { id: question }}
+
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -39,8 +40,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'Get #edit' do
-    before { login(user) }
-    before {get :edit, params: { id: question }}
+    before do
+      login(user)
+      get :edit, params: { id: question }
+    end
+
     it 'renders edit view' do
       expect(response).to render_template :edit
     end
@@ -94,30 +98,49 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with invalid attributes' do
       before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
-      it 'does not change quetion' do
+
+      it 'does not change question' do
         question.reload
 
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
+
       it 're-renders edit view' do
         expect(response).to render_template :edit
       end
+
     end
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
+    context 'for author' do
+      before { login(user) }
 
-    it 'deletes the question' do
-      @question = user.questions.create(title: "MyString", body: "MyText")
-      expect { delete :destroy, params: { id: @question.id } }.to change(Question, :count).by(-1)
+      it 'deletes the question' do
+        @question = user.questions.create(title: "MyString", body: "MyText")
+        expect { delete :destroy, params: { id: @question.id } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to index' do
+        @question = user.questions.create(title: "MyString", body: "MyText")
+        delete :destroy, params: { id: @question.id }
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'redirects to index' do
-      @question = user.questions.create(title: "MyString", body: "MyText")
-      delete :destroy, params: { id: @question.id }
-      expect(response).to redirect_to questions_path
+    context 'not author' do
+      before do
+        login(user)
+        @question = user.questions.create(title: "MyString", body: "MyText")
+        user2 = create(:user)
+        login(user2)
+      end
+
+      it 'trying delete the question' do
+        expect { delete :destroy, params: { id: @question.id } }.to change(Question, :count).by(0)
+      end
     end
   end
+
 end

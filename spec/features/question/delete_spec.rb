@@ -1,23 +1,15 @@
 require "rails_helper"
 
 feature 'User can delete question' do
+  given(:user) { create(:user) }
+  given(:question) { create(:question, user:user)}
+
   background do
-    user = create(:user)
-    visit new_user_session_path
-
-    # Действия
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
-
-    click_on 'Ask question'
-
-    fill_in 'Title', with: "Test question"
-    fill_in 'Body', with: "text text text"
-    click_on 'Ask'
+    sign_in(user)
+    visit question_path(question)
   end
 
-  scenario 'delete your question' do
+  scenario 'delete self question' do
     click_on 'Delete question'
 
     expect(page).to have_content 'Question deleted'
@@ -29,15 +21,18 @@ feature 'User can delete question' do
     user2 = create(:user)
     visit new_user_session_path
 
-    # Действия
-    fill_in 'Email', with: user2.email
-    fill_in 'Password', with: user2.password
-    click_on 'Log in'
+    sign_in(user2)
 
     visit question_path(Question.first)
 
-    click_on 'Delete question'
+    expect(page).to have_no_content "Delete question"
+  end
 
-    expect(page).to have_content "You can't dalete this question"
+  scenario 'tries delete not authenticate' do
+    click_on 'Logout'
+
+    visit question_path(Question.first)
+
+    expect(page).to have_no_content "Delete question"
   end
 end
