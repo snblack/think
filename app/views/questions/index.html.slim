@@ -7,7 +7,7 @@ table
   tbody
     - @questions.each do |question|
       tr
-      td= "#{question.title} #{question.body}"
+      td= question.title
       td= link_to 'show', question_path(question)
 
 

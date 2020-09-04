@@ -1,5 +1,5 @@
-h1 = question.title
-p1 = question.body
+h1 = @question.title
+p1 = @question.body
 
 table
   thead
@@ -7,21 +7,22 @@ table
         th = "Body"
         th = "Actions"
   tbody
-    - question.answers.each do |answer|
+    - @question.answers.each do |answer|
       tr
         -if answer.persisted?
           td = answer.body
-          td = link_to 'Delete answer',
-                    answer_path(answer),
-                    method: :delete
-
+          -if current_user&.author_of?(answer)
+            td = link_to 'Delete answer',
+                      answer_path(answer),
+                      method: :delete
 <br>
--begin
-  -if current_user.author_of?(question)
+
+  -if current_user&.author_of?(@question)
     = link_to 'Delete question',
-                question_path,
+                question_path(question),
                 method: :delete
--rescue
+
+= render 'shared/errors', resource: @answer
 
 = form_with model: [@question, @answer], local: true do |f|
   = f.label :body

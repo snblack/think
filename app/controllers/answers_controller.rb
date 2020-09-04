@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question_path(@answer.question)
     else
-      redirect_to question_path(@answer.question), notice: 'Question can not empty!'
+      render "questions/show"
     end
   end
 
@@ -22,7 +22,7 @@ class AnswersController < ApplicationController
     answer = Answer.find(params[:id])
     question = answer.question
 
-    if current_user.author_of?(question)
+    if current_user.author_of?(answer)
       answer.destroy
       redirect_to question_path(question), notice: 'Answer deleted'
     else

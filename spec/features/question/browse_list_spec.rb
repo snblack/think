@@ -8,11 +8,10 @@ feature 'any user can browse list of questions' do
     visit root_path
 
     expect(page).to have_content 'List of questions'
+
     @questions.each do |q|
       expect(page).to have_content q.title
     end
-  
-    expect(page).to have_content 'MyText'
   end
 
 end

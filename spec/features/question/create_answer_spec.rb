@@ -8,16 +8,16 @@ feature 'user can create answer for question', %q{
 } do
 
   given(:user) { create(:user) }
+  given(:question) {create(:question, user: user)}
 
   scenario 'to answer' do
     sign_in(user)
-    question = create(:question, user: user)
     visit question_path(question)
 
     fill_in 'Body', with: "text text text"
     click_on 'Post your answer'
 
-    expect(page).to have_content question.answers[0].body
+    expect(page).to have_content 'text text text'
   end
 
   scenario 'Unauthenticated user tries to answer' do
@@ -37,7 +37,7 @@ feature 'user can create answer for question', %q{
 
     click_on 'Post your answer'
 
-    expect(page).to have_content 'Question can not empty!'
+    expect(page).to have_content "Body can't be blank"
   end
 
 end

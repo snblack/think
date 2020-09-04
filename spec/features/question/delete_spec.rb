@@ -13,6 +13,7 @@ feature 'User can delete question' do
     click_on 'Delete question'
 
     expect(page).to have_content 'Question deleted'
+    expect(page).to_not have_content question.title
   end
 
   scenario 'tries delete not your question' do
@@ -23,15 +24,15 @@ feature 'User can delete question' do
 
     sign_in(user2)
 
-    visit question_path(Question.first)
+    visit question_path(question)
 
-    expect(page).to have_no_content "Delete question"
+    expect(page).to have_no_link "Delete question"
   end
 
   scenario 'tries delete not authenticate' do
     click_on 'Logout'
 
-    visit question_path(Question.first)
+    visit question_path(question)
 
     expect(page).to have_no_content "Delete question"
   end
