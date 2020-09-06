@@ -34,6 +34,6 @@ feature 'User can delete question' do
 
     visit question_path(question)
 
-    expect(page).to have_no_content "Delete question"
+    expect(page).to have_no_link "Delete question"
   end
 end

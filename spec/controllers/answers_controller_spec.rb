@@ -41,7 +41,7 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer} }.to change(Question, :count).by(-1)
+        expect { delete :destroy, params: { id: answer} }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to index' do
@@ -60,6 +60,12 @@ RSpec.describe AnswersController, type: :controller do
       it 'trying delete the question' do
         expect { delete :destroy, params: { id: answer } }.to_not change(Question, :count)
       end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+
     end
   end
 end

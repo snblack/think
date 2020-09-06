@@ -57,10 +57,15 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question)} }.to change(Question, :count).by(1)
       end
-      it 'redirects to show view' do
+      it 'redirects to show' do
         post :create, params: { question: attributes_for(:question)}
         expect(response).to redirect_to assigns(:question)
       end
+      it 'connect with user' do
+        post :create, params: { question: attributes_for(:question), user: user}
+        expect(question.user) == user
+      end
+
     end
 
     context 'with invalid attributes' do
@@ -138,6 +143,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'trying delete the question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+
+        expect(response).to redirect_to question
       end
     end
   end

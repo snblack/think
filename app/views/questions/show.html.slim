@@ -15,7 +15,7 @@ table
             td = link_to 'Delete answer',
                       answer_path(answer),
                       method: :delete
-<br>
+br
 
   -if current_user&.author_of?(@question)
     = link_to 'Delete question',
