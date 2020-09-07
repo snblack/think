@@ -10,7 +10,7 @@ feature 'user can create answer for question', %q{
   given(:user) { create(:user) }
   given(:question) {create(:question, user: user)}
 
-  scenario 'to answer' do
+  scenario 'Authenticate user create answer', js: true do
     sign_in(user)
     visit question_path(question)
 
@@ -30,7 +30,7 @@ feature 'user can create answer for question', %q{
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
-  scenario 'validation errors are shown' do
+  scenario 'Authenticate user create answer with error', js: true do
     sign_in(user)
     question = create(:question)
     visit question_path(question)

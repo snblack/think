@@ -9,8 +9,6 @@ class AnswersController < ApplicationController
 
     if @answer.save
       redirect_to question_path(@answer.question)
-    else
-      render "questions/show"
     end
   end
 
