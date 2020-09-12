@@ -1,14 +1,9 @@
 h1= 'List of questions'
 
-table
-  thead
-    th= 'Вопросы'
-    th= 'Действия'
-  tbody
-    - @questions.each do |question|
-      tr
-      td= question.title
-      td= link_to 'show', question_path(question)
+.questions
+  =render @questions
 
+.question-errors
+  = render 'shared/errors', resource: @question
 
 p= link_to 'Ask question', new_question_path

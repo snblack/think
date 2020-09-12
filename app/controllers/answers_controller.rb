@@ -5,22 +5,26 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
+    @answer.save
+  end
 
-
-    if @answer.save
-      redirect_to question_path(@answer.question)
-    end
+  def update
+    @answer = Answer.find(params[:id])
+    @answer.update(answer_params)
+    @question = @answer.question
+    @questions = Question.all
   end
 
   def destroy
-    answer = Answer.find(params[:id])
-    question = answer.question
+    @answer = Answer.find(params[:id])
+    @question = @answer.question
 
-    if current_user.author_of?(answer)
-      answer.destroy
-      redirect_to question_path(question), notice: 'Answer deleted'
-    else
-      redirect_to question_path(question), notice: "You can't dalete this answer"
+    if current_user.author_of?(@answer)
+      @answer.destroy
+
+      respond_to do |format|
+        format.js { flash.now[:notice] = "Answer deleted" }
+      end
     end
   end
 

@@ -1,0 +1,3 @@
+$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
+$('[data-answer-id="<%= @answer.id %>"]').remove();
+$("#flash").html('<%= j render partial: "shared/notice_banner" %>');

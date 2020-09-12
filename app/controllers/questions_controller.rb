@@ -19,6 +19,12 @@ class QuestionsController < ApplicationController
 
   end
 
+  def update
+    @question = Question.find(params[:id])
+    @question.update(question_params)
+    @questions =Question.all
+  end
+
   def create
     @question = current_user.questions.new(question_params)
 
@@ -26,14 +32,6 @@ class QuestionsController < ApplicationController
       redirect_to @question, notice: 'Your question succesfully created'
     else
       render :new
-    end
-  end
-
-  def update
-    if question.update(question_params)
-      redirect_to @question
-    else
-      render :edit
     end
   end
 

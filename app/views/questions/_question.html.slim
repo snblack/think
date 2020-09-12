@@ -1,0 +1,15 @@
+-if question.persisted?
+  p= question.title
+  p= link_to 'Show', question_path(question)
+  -if current_user&.author_of?(question)
+    p= link_to 'Delete',
+            question_path(question),
+            method: :delete
+    p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
+
+    = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
+      = f.label :title
+      = f.text_area :title
+      = f.label :body
+      = f.text_area :body
+      = f.submit 'Save'
