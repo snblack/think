@@ -4,8 +4,6 @@ p1 = @question.body
 .answers
   =render @question.answers
 
-br
-
   -if current_user&.author_of?(@question)
     = link_to 'Delete question',
                 question_path(question),

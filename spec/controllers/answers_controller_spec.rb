@@ -94,7 +94,6 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :update
       end
-
     end
   end
 

@@ -12,12 +12,6 @@
   <body>
     <%= render 'shared/nav' %>
 
-    <div id="flash">
-      <% if notice.present? %>
-        <%= render partial: "shared/notice_banner" %>
-      <% end %>
-    </div>
-    
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
