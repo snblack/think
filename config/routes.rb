@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, shallow: true do
-      get '', to: 'answers#best', as: :best
+      get '', to: 'answers#mark_as_best', as: :best
     end
   end
 

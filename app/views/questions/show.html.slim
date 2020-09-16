@@ -2,7 +2,7 @@ h1 = @question.title
 p1 = @question.body
 
 .answers
-  =render @question.answers
+  =render @question.answers.order_by_best
 
   -if current_user&.author_of?(@question)
     = link_to 'Delete question',
