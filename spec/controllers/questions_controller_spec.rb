@@ -115,7 +115,7 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:question) {create(:question, user: user)}
     before {login(user)}
 
-    context 'with valid attributes' do
+    context 'For Author with valid attributes' do
       it 'changes question attributes' do
         patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }}, format: :js
         question.reload
@@ -128,7 +128,41 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :update
       end
     end
-    context 'with invalid attributes' do
+    context 'For Author with invalid attributes' do
+      let!(:user2) {create(:user)}
+      before {login(user2)}
+
+      it 'does not change question attributes' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid)}, format: :js
+        end.to_not change(question, :title)
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid)}, format: :js
+        end.to_not change(question, :body)
+      end
+      it 'renders update view' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+
+    end
+    context 'Not Author with valid attributes' do
+      let!(:user2) {create(:user)}
+      before {login(user2)}
+      
+      it 'changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }}, format: :js
+        question.reload
+
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
+      end
+      it 'renders update view' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }}, format: :js
+        expect(response).to render_template :update
+      end
+    end
+    context 'Not Author with invalid attributes' do
       it 'does not change question attributes' do
         expect do
           patch :update, params: { id: question, question: attributes_for(:question, :invalid)}, format: :js

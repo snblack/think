@@ -26,9 +26,8 @@ feature 'user can choose the best answer for self question' do
 
       page.all('.best-answer-link')[1].click
 
-      within ".answers" do
-        expect(page).to have_content 'the best answer'
-      end
+      answers = page.all('.answers')
+      expect(answers[0]).to have_content 'the best answer'
     end
 
     scenario 'chooses another answer the best', js: true do

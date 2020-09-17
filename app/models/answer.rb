@@ -7,8 +7,10 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   def choose_best
-    self.question.answers.update_all(best: false)
-    self.update(best: true)
+    Answer.transaction do
+      self.question.answers.update_all(best: false)
+      self.update!(best: true)
+    end
   end
 
 end

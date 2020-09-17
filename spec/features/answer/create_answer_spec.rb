@@ -21,11 +21,12 @@ feature 'user can create answer for question', %q{
   end
 
   scenario 'Unauthenticated user tries to answer' do
-    question = create(:question)
     visit question_path(question)
 
-    fill_in 'Body', with: "text text text"
-    click_on 'Post your answer'
+    within '.new-answer' do
+      fill_in 'Body', with: "text text text"
+      click_on 'Post your answer'
+    end
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end

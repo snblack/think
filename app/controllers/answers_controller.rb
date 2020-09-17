@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_answer, only: %i[update destroy]
+  before_action :find_answer, only: %i[update destroy mark_as_best]
 
   def create
     @question = Question.find(params[:question_id])
@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user = @answer.user
+    if current_user.author_of?(@answer)
       @answer.update(answer_params)
       @question = @answer.question
     end
@@ -19,17 +19,14 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-
-      respond_to do |format|
-        format.js { flash.now[:notice] = "Answer deleted" }
-      end
+      flash.now[:notice] = "Answer deleted"
     end
   end
 
   def mark_as_best
-    @answer = Answer.find(params[:answer_id])
-
-    @answer.choose_best
+    if current_user.author_of?(@answer)
+      @answer.choose_best
+    end
   end
 
   private

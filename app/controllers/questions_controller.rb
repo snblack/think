@@ -20,9 +20,8 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user == @question.user
+    if current_user.author_of?(@question)
       @question.update(question_params)
-      @questions = Question.all
     end
   end
 

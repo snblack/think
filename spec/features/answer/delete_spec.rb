@@ -11,7 +11,10 @@ feature 'User can delete answer' do
   end
 
   scenario 'delete self answer', js: true do
-    click_on 'Delete'
+    within '.answers' do
+      click_on 'Delete'
+    end
+
     page.driver.browser.switch_to.alert.accept
 
     expect(page).to have_content 'Answer deleted'
