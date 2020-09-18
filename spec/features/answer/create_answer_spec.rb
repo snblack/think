@@ -20,6 +20,21 @@ feature 'user can create answer for question', %q{
     expect(page).to have_content 'text text text'
   end
 
+  scenario 'asks a answer with attached file', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    within '.new-answer' do
+      fill_in 'Body', with: "text text text"
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+    end
+
+    click_on 'Post your answer'
+    expect(page).to have_link "rails_helper.rb"
+    expect(page).to have_link "spec_helper.rb"
+  end
+
+
   scenario 'Unauthenticated user tries to answer' do
     visit question_path(question)
 
