@@ -10,14 +10,18 @@ feature 'User can delete answer' do
     visit question_path(answer.question)
   end
 
-  scenario 'delete self answer' do
-    click_on 'Delete answer'
+  scenario 'delete self answer', js: true do
+    within '.answers' do
+      click_on 'Delete'
+    end
+
+    page.driver.browser.switch_to.alert.accept
 
     expect(page).to have_content 'Answer deleted'
     expect(page).to_not have_content answer.body
   end
 
-  scenario 'tries delete not your question' do
+  scenario 'tries delete not your question', js: true do
     click_on 'Logout'
 
     user2 = create(:user)
@@ -27,10 +31,10 @@ feature 'User can delete answer' do
 
     visit question_path(question)
 
-    expect(page).to have_no_content "Delete answer"
+    expect(page).to_not have_link "Delete answer"
   end
 
-  scenario 'tries delete not authenticated user' do
+  scenario 'tries delete not authenticated user', js: true do
     click_on 'Logout'
 
     visit question_path(question)

@@ -1,0 +1,8 @@
+$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>')
+$('.choosed').addClass('hidden')
+$('.best-answer-link').removeClass('hidden')
+best_answer = $('[data-answer-id="<%= @answer.id %>"]').parent('DIV')
+best_answer.remove()
+$('.answers').prepend(best_answer)
+best_answer.children('p')[1].remove()
+best_answer.children('p')[0].after('the best answer')

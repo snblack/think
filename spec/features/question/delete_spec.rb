@@ -10,7 +10,7 @@ feature 'User can delete question' do
   end
 
   scenario 'delete self question' do
-    click_on 'Delete question'
+    click_on 'Delete'
 
     expect(page).to have_content 'Question deleted'
     expect(page).to_not have_content question.title
