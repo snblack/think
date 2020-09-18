@@ -12,7 +12,7 @@ RSpec.describe Answer, type: :model do
 
   it 'atrributes of answer have right value' do
     answer.choose_best
-    expect(answer.best).to eq true
+    expect(answer).to be_best
   end
 
   it 'best answer only one' do
@@ -24,8 +24,8 @@ RSpec.describe Answer, type: :model do
 
     answer.reload
 
-    expect(answer.best).to eq false
-    expect(answer2.best).to eq true
+    expect(answer).to_not be_best
+    expect(answer2).to be_best
   end
 
   it 'method not change answer of other questions' do
@@ -38,7 +38,7 @@ RSpec.describe Answer, type: :model do
 
     answer.reload
 
-    expect(answer.best).to eq true
-    expect(answer2.best).to eq true
+    expect(answer).to be_best
+    expect(answer2).to be_best
   end
 end

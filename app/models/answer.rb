@@ -8,8 +8,8 @@ class Answer < ApplicationRecord
 
   def choose_best
     Answer.transaction do
-      self.question.answers.update_all(best: false)
-      self.update!(best: true)
+      question.answers.update_all(best: false)
+      update!(best: true)
     end
   end
 
