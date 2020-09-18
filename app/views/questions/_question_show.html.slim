@@ -11,8 +11,13 @@ p1= @question.body
           method: :delete
 
 = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
+  p
   = f.label :title
-  = f.text_area :title
+  = f.text_field :title
+  p
   = f.label :body
   = f.text_area :body
-  = f.submit 'Save'
+  p
+  = f.label :files
+  = f.file_field :files, multiple: true
+  p= f.submit 'Save'

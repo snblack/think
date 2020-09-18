@@ -20,7 +20,7 @@ feature 'User can edit question' do
   end
 
   describe 'Authenticated user' do
-    scenario 'edits self answer', js: true do
+    scenario 'Author edits self question', js: true do
       sign_in user
       visit question_path(question)
 
@@ -36,7 +36,23 @@ feature 'User can edit question' do
 
         expect(page).to_not have_selector 'textarea'
       end
+    end
 
+    scenario 'Author edits self question and attached files', js: true do
+      sign_in user
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within '.question' do
+        fill_in 'Title', with: 'edited title question'
+        fill_in 'Body', with: 'edited body question'
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link "rails_helper.rb"
+        expect(page).to have_link "spec_helper.rb"
+      end
     end
 
     scenario 'edits self question with errors', js: true do
