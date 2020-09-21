@@ -3,6 +3,9 @@ p1= @question.body
 - if @question.files.attached?
   - @question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)
+    p= link_to 'Delete image',
+                file_path(file),
+                method: :delete
 
 -if current_user&.author_of?(@question)
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
@@ -19,5 +22,5 @@ p1= @question.body
   = f.text_area :body
   p
   = f.label :files
-  = f.file_field :files, multiple: true
+  = f.file_field :files, multiple: true, direct_upload: true
   p= f.submit 'Save'
