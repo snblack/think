@@ -7,11 +7,15 @@ br
 
 .question-errors
   = render 'shared/errors', resource: @question
-  
+
 .answer-errors
   = render 'shared/errors', resource: @answer
 
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
+  p
   = f.label :body
   = f.text_area :body
-  = f.submit 'Post your answer'
+  p
+  = f.label :files
+  = f.file_field :files, multiple: true, direct_upload: true
+  p= f.submit 'Post your answer'

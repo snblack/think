@@ -31,6 +31,9 @@
 
 .idea
 
+#Ignore file with password
+.env
+
 /public/packs
 /public/packs-test
 /node_modules

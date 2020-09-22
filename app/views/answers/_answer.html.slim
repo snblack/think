@@ -1,6 +1,14 @@
 div class="answer-inner-#{answer.id}"
   -if answer.persisted?
     p{class="answer", data-answer-id=answer.id}= answer.body
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        p= link_to file.filename.to_s, url_for(file)
+        -if current_user&.author_of?(answer)
+          p= link_to 'Delete image',
+                      file_path(file),
+                      method: :delete
+
     -if current_user&.author_of?(@question)
       -if answer.best?
         p{class='choosed', data-answer-id=answer.id}= 'the best answer'
@@ -14,6 +22,10 @@ div class="answer-inner-#{answer.id}"
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
       = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+        p
         = f.label :body
         = f.text_area :body
-        = f.submit 'Save'
+        p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
+        p= f.submit 'Save'
