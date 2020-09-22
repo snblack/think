@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: %i[show update purge]
+  before_action :find_question, only: %i[show update]
 
   def index
     @questions = Question.all
