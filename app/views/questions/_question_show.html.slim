@@ -6,6 +6,11 @@ p1= @question.body
     p= link_to 'Delete image',
                 file_path(file),
                 method: :delete
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
 
 -if current_user&.author_of?(@question)
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }

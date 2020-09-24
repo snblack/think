@@ -14,9 +14,9 @@ RSpec.describe FilesController, type: :controller do
         expect { delete :destroy, params: { id: question.files.blobs[0].id } }.to change(ActiveStorage::Attachment, :count).by(-1)
       end
 
-      it 'redirects to question' do
+      it 'redirects to root' do
         delete :destroy, params: { id: question.files.blobs[0].id }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -45,9 +45,9 @@ RSpec.describe FilesController, type: :controller do
         expect { delete :destroy, params: { id: answer.files.blobs[0].id } }.to change(ActiveStorage::Attachment, :count).by(-1)
       end
 
-      it 'redirects to answer' do
+      it 'redirects to root_path' do
         delete :destroy, params: { id: answer.files.blobs[0].id }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to root_path
       end
     end
 
