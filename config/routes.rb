@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "questions#index"
 
   resources :files, only: [:destroy]
+  resources :links, only: [:destroy]
 
   resources :questions do
     resources :answers, shallow: true do

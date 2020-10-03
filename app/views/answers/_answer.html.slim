@@ -5,7 +5,14 @@ div class="answer-inner-#{answer.id}"
     p Links:
     ul
       - answer.links.each do |link|
-        li= link_to link.name, link.url
+        -if link.gist?
+          script src= "#{link.create_url}"
+        -else
+          li= link_to link.name, link.url
+        -if current_user&.author_of?(@answer)
+          p= link_to 'Delete link',
+                      link_path(link),
+                      method: :delete
 
     - if answer.files.attached?
       - answer.files.each do |file|
@@ -34,4 +41,10 @@ div class="answer-inner-#{answer.id}"
       p
       = f.label :files
       = f.file_field :files, multiple: true, direct_upload: true
+      p Links:
+      p
+        = f.fields_for :links do |link|
+          = render 'questions/link_fields', f: link
+        .links
+          = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
       p= f.submit 'Save'

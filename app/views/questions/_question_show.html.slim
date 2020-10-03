@@ -10,7 +10,14 @@ p1= @question.body
   p Links:
   ul
     - @question.links.each do |link|
-      li= link_to link.name, link.url
+      -if link.gist?
+        script src= "#{link.create_url}"
+      -else
+        li= link_to link.name, link.url
+      -if current_user&.author_of?(@question)
+        p= link_to 'Delete link',
+                    link_path(link),
+                    method: :delete
 
 -if current_user&.author_of?(@question)
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
@@ -28,4 +35,10 @@ p1= @question.body
   p
   = f.label :files
   = f.file_field :files, multiple: true, direct_upload: true
+  p Links:
+  p
+    = f.fields_for :links do |link|
+      = render 'link_fields', f: link
+    .links
+      = link_to_add_association 'add link', f, :links
   p= f.submit 'Save'

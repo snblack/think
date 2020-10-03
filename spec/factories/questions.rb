@@ -18,5 +18,12 @@ FactoryBot.define do
         question.files.attach fixture_file_upload("#{Rails.root}/spec/spec_helper.rb")
       end
     end
+
+    trait :with_links do
+      user
+      title
+      body { "MyText" }
+      link
+    end
   end
 end
