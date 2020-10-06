@@ -16,5 +16,9 @@
       = render 'link_fields', f: link
     .links
       = link_to_add_association 'add link', f, :links
+  p Reward:
+  p
+    = f.fields_for :reward do |reward|
+      = render 'reward_fields', f: reward
 
   = f.submit 'Ask'

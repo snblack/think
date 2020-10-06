@@ -1,5 +1,9 @@
 h1= @question.title
-p1= @question.body
+p= @question.body
+p= @reward.name
+p= link_to @reward.file.filename.to_s, url_for(@reward.file)
+= image_tag(@reward.file, size: "30x30")
+
 - if @question.files.attached?
   - @question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)

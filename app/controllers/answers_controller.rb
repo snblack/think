@@ -24,8 +24,14 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
+    @reward = @answer.question.reward
+
     if current_user.author_of?(@answer)
-      @answer.choose_best
+      Answer.transaction do
+        @answer.choose_best
+
+        current_user.rewards << @reward
+      end
     end
   end
 

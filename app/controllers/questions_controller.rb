@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @reward = @question.reward
     @answer = @question.answers.new
     @answer.links.new
   end
@@ -15,6 +16,7 @@ class QuestionsController < ApplicationController
     @question = Question.new
     @answer = @question.answers.new
     @question.links.new #.build
+    @question.build_reward #.build
   end
 
   def edit
@@ -59,8 +61,10 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body,
-                                    files: [], links_attributes: [:name, :url])
+    params.require(:question).permit(:title, :body, files: [],
+                                    links_attributes: [:name, :url],
+                                    reward_attributes: [:name, :file])
+
   end
 
 

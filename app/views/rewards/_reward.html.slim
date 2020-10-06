@@ -1,0 +1,11 @@
+table
+  thead
+    tr
+      th= "Вопрос"
+      th= "Название"
+      th= "Нагрда"
+  tbody
+    tr
+      td= "#{reward.rewardable}"
+      td= "#{reward.name}"
+      td= image_tag(reward.file, size: "50x50")
