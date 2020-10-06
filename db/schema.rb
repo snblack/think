@@ -94,5 +94,4 @@ ActiveRecord::Schema.define(version: 2020_10_06_143718) do
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "users"
   add_foreign_key "rewards", "questions"
-  add_foreign_key "rewards", "users"
 end
