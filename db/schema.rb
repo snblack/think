@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_04_094637) do
+ActiveRecord::Schema.define(version: 2020_10_06_143718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,11 +69,12 @@ ActiveRecord::Schema.define(version: 2020_10_04_094637) do
 
   create_table "rewards", force: :cascade do |t|
     t.string "name"
-    t.string "rewardable_type"
-    t.bigint "rewardable_id"
+    t.bigint "question_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["rewardable_type", "rewardable_id"], name: "index_rewards_on_rewardable_type_and_rewardable_id"
+    t.index ["question_id"], name: "index_rewards_on_question_id"
+    t.index ["user_id"], name: "index_rewards_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -92,4 +93,6 @@ ActiveRecord::Schema.define(version: 2020_10_04_094637) do
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "users"
+  add_foreign_key "rewards", "questions"
+  add_foreign_key "rewards", "users"
 end

@@ -2,7 +2,6 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
 
-  has_one :reward, as: :rewardable
   has_many :links, dependent: :delete_all, as: :linkable
   has_many_attached :files
   accepts_nested_attributes_for :links, reject_if: :all_blank
@@ -15,6 +14,8 @@ class Answer < ApplicationRecord
     Answer.transaction do
       question.answers.update_all(best: false)
       update!(best: true)
+
+      self.user.rewards << self.question.reward
     end
   end
 

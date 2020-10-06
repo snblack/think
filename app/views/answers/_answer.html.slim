@@ -25,7 +25,6 @@ div class="answer-inner-#{answer.id}"
   -if current_user&.author_of?(@question)
     -if answer.best?
       p{class='choosed', data-answer-id=answer.id}= 'the best answer'
-      p= link_to 'Choose answer', mark_as_best_answer_path(answer), method: :put, class: 'best-answer-link hidden', data: { answer_id: answer.id }, remote: true
       p= @reward.name
       p= image_tag(@reward.file, size: "100x100")
     -else

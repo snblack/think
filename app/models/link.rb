@@ -10,7 +10,8 @@ class Link < ApplicationRecord
   end
 
   def create_url
-    self.url + '.js'
+    uri = URI::parse(self.url + '.js')
+    ERB::Util.html_escape(uri)
   end
 
 end
