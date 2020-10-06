@@ -4,5 +4,5 @@ class Reward < ApplicationRecord
 
   has_one_attached :file
 
-  # validates :name, presence: true
+  validates :name, presence: true
 end

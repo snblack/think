@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
   it { should have_many(:links).dependent(:delete_all) }
-  it { should have_one(:reward) }
 
   it { should belong_to(:question) }
   it { should belong_to(:user) }

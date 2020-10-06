@@ -3,7 +3,7 @@ require "rails_helper"
 feature 'user can see your reward' do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:reward) {create(:reward, rewardable:question)}
+  given!(:reward) {create(:reward, question:question)}
 
   scenario 'User can see your rewards' do
     sign_in(user)

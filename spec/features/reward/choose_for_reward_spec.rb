@@ -5,7 +5,7 @@ feature 'user can choose answer for reward' do
   given!(:user2) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user2)}
-  given!(:reward) {create(:reward, rewardable:question)}
+  given!(:reward) {create(:reward, question:question)}
 
   scenario 'Author can choose answer for reward', js: true do
     sign_in(user)
