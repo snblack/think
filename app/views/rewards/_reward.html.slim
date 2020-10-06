@@ -6,6 +6,6 @@ table
       th= "Награда"
   tbody
     tr
-      td= "#{reward.rewardable}"
+      td= "#{reward.question.title}"
       td= "#{reward.name}"
       td= image_tag(reward.file, size: "50x50")
