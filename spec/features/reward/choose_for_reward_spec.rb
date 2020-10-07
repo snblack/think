@@ -13,6 +13,8 @@ feature 'user can choose answer for reward' do
 
     click_on 'Choose answer'
 
+    visit question_path(question)
+
     within '.answers' do
       expect(page).to have_content 'The best man'
       expect(page).to have_css("img[src*='reward.png']")
