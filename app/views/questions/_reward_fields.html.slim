@@ -1,0 +1,9 @@
+.nested-fields-reward
+  .field
+    p
+      = f.label :name, 'Reward name'
+      = f.text_field :name
+  .field
+    p
+      = f.label :file
+      = f.file_field :file, direct_upload: true

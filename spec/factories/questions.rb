@@ -18,5 +18,12 @@ FactoryBot.define do
         question.files.attach fixture_file_upload("#{Rails.root}/spec/spec_helper.rb")
       end
     end
+
+    trait :with_links do
+      before :create do |question|
+        question.links.new(name: 'google', url: 'https://www.google.com/')
+        question.links.new(name: 'vk', url: 'https://www.vk.com/')
+      end
+    end
   end
 end

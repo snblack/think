@@ -4,6 +4,7 @@ feature 'user can choose the best answer for self question' do
   given!(:user) { create(:user) }
   given!(:question) {create(:question, user: user)}
   given!(:answer) {create(:answer, question: question)}
+  given!(:reward) {create(:reward, question: question)}
 
   describe 'for author of question' do
     background do

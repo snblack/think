@@ -4,6 +4,7 @@ feature 'User can edit his answer' do
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
+  given(:url) {'https://vk.com/feed'}
 
   describe 'Unauthenticated user' do
     scenario 'can not edit answer' do
@@ -36,6 +37,28 @@ feature 'User can edit his answer' do
         expect(page).to have_content 'edited answer'
 
         expect(page).to_not have_selector 'textarea'
+      end
+    end
+    scenario 'edits his answer and add link', js: true do
+      sign_in user
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within '.answers' do
+        fill_in 'Body', with: 'edited answer'
+        click_on 'add link'
+
+        fill_in 'Link name', with: 'My vk'
+        fill_in 'Url', with: url
+
+        click_on 'Save'
+
+        expect(page).to_not have_content answer.body
+        expect(page).to have_content 'edited answer'
+
+        expect(page).to_not have_selector 'textarea'
+        expect(page).to have_link 'My vk', href:url
       end
     end
 
@@ -86,6 +109,4 @@ feature 'User can edit his answer' do
       end
     end
   end
-
-
 end

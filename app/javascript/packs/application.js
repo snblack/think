@@ -10,6 +10,7 @@ require("channels")
 require('jquery')
 require('packs/answers')
 require('packs/questions')
+require("@nathanvda/cocoon")
 
 
 

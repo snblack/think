@@ -1,0 +1,11 @@
+p Links:
+ul
+  - resource.links.each do |link|
+    -if link.gist?
+      script src= "#{link.create_url}"
+    -else
+      li= link_to link.name, link.url
+    -if current_user&.author_of?(resource)
+      p= link_to 'Delete link',
+                  link_path(link),
+                  method: :delete

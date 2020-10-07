@@ -1,14 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  it { should have_many(:links).dependent(:delete_all) }
+
   it { should belong_to(:question) }
   it { should belong_to(:user) }
 
   it { should validate_presence_of :body }
+  it { should accept_nested_attributes_for :links }
 
-  let(:user) {create(:user)}
-  let(:question) { create(:question, user: user) }
-  let(:answer) { create(:answer, question: question) }
+  let!(:user) {create(:user)}
+  let!(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question) }
+  let!(:reward) { create(:reward, question: question, user:user) }
 
   it 'atrributes of answer have right value' do
     answer.choose_best
@@ -32,7 +36,7 @@ RSpec.describe Answer, type: :model do
     answer.choose_best
     answer.save
 
-    question2 = create(:question, user: user)
+    question2 = create(:question, user: user, reward:reward)
     answer2 = create(:answer, question: question2)
     answer2.choose_best
 

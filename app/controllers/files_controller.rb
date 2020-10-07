@@ -8,6 +8,7 @@ class FilesController < ApplicationController
              else
               "You not authorized"
              end
-    redirect_back(fallback_location: root_path), notice: notice
+
+    redirect_back fallback_location: root_path, notice: notice
   end
 end

@@ -11,11 +11,13 @@ gem 'webpacker', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'devise'
+gem "cocoon"
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem "slim-rails"
 gem 'jquery-rails'
 gem "aws-sdk-s3", require: false
+gem "octokit", "~> 4.0"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

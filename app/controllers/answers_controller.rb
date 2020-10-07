@@ -24,7 +24,7 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-    if current_user.author_of?(@answer)
+    if current_user.author_of?(@answer.question)
       @answer.choose_best
     end
   end
@@ -36,6 +36,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
   end
 end
