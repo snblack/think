@@ -15,7 +15,7 @@ class Answer < ApplicationRecord
       question.answers.update_all(best: false)
       update!(best: true)
 
-      self.user.rewards << self.question.reward
+      user.rewards << question.reward
     end
   end
 

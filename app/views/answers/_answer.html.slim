@@ -2,17 +2,7 @@ div class="answer-inner-#{answer.id}"
   -if answer.persisted?
     p{class="answer", data-answer-id=answer.id}= answer.body
   .links
-    p Links:
-    ul
-      - answer.links.each do |link|
-        -if link.gist?
-          script src= "#{link.create_url}"
-        -else
-          li= link_to link.name, link.url
-        -if current_user&.author_of?(@answer)
-          p= link_to 'Delete link',
-                      link_path(link),
-                      method: :delete
+    =render 'shared/link', resource: answer
 
     - if answer.files.attached?
       - answer.files.each do |file|
@@ -29,7 +19,6 @@ div class="answer-inner-#{answer.id}"
       p= image_tag(@reward.file, size: "100x100")
     -else
       p= link_to 'Choose answer', mark_as_best_answer_path(answer), method: :put, class: 'best-answer-link', data: { answer_id: answer.id }, remote: true
-
 
   -if current_user&.author_of?(answer)
     p= link_to 'Delete', answer_path(answer), method: :delete, data: { answer_id: answer.id, confirm: 'Are you Sure?', remote: true }

@@ -24,8 +24,6 @@ class AnswersController < ApplicationController
   end
 
   def mark_as_best
-    @reward = @answer.question.reward
-
     if current_user.author_of?(@answer.question)
       @answer.choose_best
     end

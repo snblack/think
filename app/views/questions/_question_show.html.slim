@@ -12,17 +12,7 @@ p= @question.body
                 file_path(file),
                 method: :delete
 .links
-  p Links:
-  ul
-    - @question.links.each do |link|
-      -if link.gist?
-        script src= "#{link.create_url}"
-      -else
-        li= link_to link.name, link.url
-      -if current_user&.author_of?(@question)
-        p= link_to 'Delete link',
-                    link_path(link),
-                    method: :delete
+  =render 'shared/link', resource: question
 
 -if current_user&.author_of?(@question)
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
@@ -46,4 +36,5 @@ p= @question.body
       = render 'link_fields', f: link
     .links
       = link_to_add_association 'add link', f, :links
+
   p= f.submit 'Save'

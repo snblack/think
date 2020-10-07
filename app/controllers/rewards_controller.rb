@@ -1,5 +1,6 @@
 class RewardsController < ApplicationController
   def index
-    @rewards = current_user.rewards
+    @rewards = Reward.includes(:user).where("user_id = ?", current_user)
+
   end
 end

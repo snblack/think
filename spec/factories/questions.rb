@@ -20,10 +20,10 @@ FactoryBot.define do
     end
 
     trait :with_links do
-      user
-      title
-      body { "MyText" }
-      link
+      before :create do |question|
+        question.links.new(name: 'google', url: 'https://www.google.com/')
+        question.links.new(name: 'vk', url: 'https://www.vk.com/')
+      end
     end
   end
 end

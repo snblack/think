@@ -19,10 +19,9 @@ feature 'user can add links to answer' do
     end
 
     click_on 'Post your answer'
-
     expect(page).to have_link 'my vk', href:url
-
   end
+
   scenario 'User adds any links when asks answer', js: true do
     sign_in(user)
     visit question_path(question)
