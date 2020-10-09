@@ -6,11 +6,11 @@ $(document).on('turbolinks:load', function(){
     $('form#edit-question-' + questionId).removeClass('hidden');
   });
 
-  $('p.vote')
+  $('p.vote_question')
       .on('ajax:success', function(e) {
         var question = e.detail[0]
         $('.question-errors').html('');
-        $('p.rating').html('<p>' + question.rating + '</p>')
+        $('p.rating_question').html('<p>' + question.rating + '</p>')
       })
       .on('ajax:error', function (e) {
         var errors = e.detail[0];

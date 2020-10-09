@@ -125,7 +125,7 @@ feature 'user can vote for question/answer' do
       scenario 'User can not vote for self question', js: true do
         click_on 'Up'
 
-        within '.rating' do
+        within '.rating_question' do
           expect(page).to have_content '0'
         end
       end

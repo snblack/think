@@ -30,37 +30,43 @@ class AnswersController < ApplicationController
   end
 
   def up
-    if @answer.user != current_user
-      if status == 'positive'
-        errors_vote
-
-      elsif status == 'negativ'
-        cancel_vote
-
-      else
-        create_vote(true)
-        respond_create
-      end
+    if current_user.author_of?(@answer)
+      errors_user
 
     else
-      errors_user
+      if @answer.votes.exists?
+
+        if @answer.votes[0].value == 1
+          errors_vote
+
+        elsif @answer.votes[0].value == -1
+          cancel_vote
+        end
+
+      else
+        create_vote(1)
+        respond_create
+      end
     end
   end
 
   def down
-    if @answer.user != current_user
-      if status == 'positive'
-        cancel_vote
+    if current_user.author_of?(@answer)
+      errors_user
 
-      elsif status == 'negativ'
-        errors_vote
+    else
+      if @answer.votes.exists?
 
+        if @answer.votes[0].value == 1
+          cancel_vote
+
+        elsif @answer.votes[0].value == -1
+          errors_vote
+        end
       else
-        create_vote(false)
+        create_vote(-1)
         respond_create
       end
-    else
-      errors_user
     end
   end
 
@@ -75,11 +81,8 @@ class AnswersController < ApplicationController
     end
   end
 
-  def create_vote(positive_value)
-    Answer.transaction do
-      current_user.votes.new(positive: positive_value)
-      @answer.votes << current_user.votes.last
-    end
+  def create_vote(value_vote)
+    @answer.votes.create(user: current_user, value: value_vote)
 
     update_rating(@answer)
   end
@@ -98,6 +101,7 @@ class AnswersController < ApplicationController
 
   def cancel_vote
     @answer.votes.find_by(user: current_user).destroy
+
     update_rating(@answer)
 
     respond_to do |format|
@@ -111,10 +115,6 @@ class AnswersController < ApplicationController
     end
   end
 
-  def status
-    @answer.status_vote(current_user)
-  end
-
   def errors_vote
     respond_to do |format|
       format.json do
@@ -125,10 +125,7 @@ class AnswersController < ApplicationController
   end
 
   def update_rating(answer)
-    positive_votes = answer.votes.where(positive: true).count
-    negative_votes = answer.votes.where(positive: false).count
-
-    rating = positive_votes - negative_votes
+    rating = answer.votes.sum(:value)
 
     @answer.rating = rating
   end

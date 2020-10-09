@@ -1,9 +1,9 @@
 h1= @question.title
 p= @question.body
 
-p[class='vote']= link_to 'Up', up_question_path, method: :put, remote: true
-p[class='rating']= @question.rating
-p[class='vote']= link_to 'Down',  down_question_path, method: :put, remote: true
+p[class='vote_question']= link_to 'Up', up_question_path(@question), method: :put, remote: true
+p[class='rating_question']= @question.rating
+p[class='vote_question']= link_to 'Down',  down_question_path(@question), method: :put, remote: true
 
 -if @question.reward&.persisted?
   p= @reward.name

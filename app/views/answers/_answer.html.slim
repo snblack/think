@@ -1,9 +1,9 @@
 div class="answer-inner-#{answer.id}"
   -if answer.persisted?
     p{class="answer", data-answer-id=answer.id}= answer.body
-    p[class='vote']= link_to 'Up', up_answer_path(answer), method: :put, remote: true
-    p[class='rating']= answer.rating
-    p[class='vote']= link_to 'Down',  down_answer_path(answer), method: :put, remote: true
+    p[class='vote_answer']= link_to 'Up', up_answer_path(answer), method: :put, remote: true
+    p[class='rating_answer']= answer.rating
+    p[class='vote_answer']= link_to 'Down',  down_answer_path(answer), method: :put, remote: true
   .links
     =render 'shared/link', resource: answer
 

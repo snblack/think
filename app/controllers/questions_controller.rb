@@ -49,37 +49,43 @@ class QuestionsController < ApplicationController
   end
 
   def up
-    if @question.user != current_user
-      if status == 'positive'
-        errors_vote
-
-      elsif status == 'negativ'
-        cancel_vote
-
-      else
-        create_vote(true)
-        respond_create
-      end
+    if current_user.author_of?(@question)
+      errors_user
 
     else
-      errors_user
+      if @question.votes.exists?
+
+        if @question.votes[0].value == 1
+          errors_vote
+
+        elsif @question.votes[0].value == -1
+          cancel_vote
+        end
+
+      else
+        create_vote(1)
+        respond_create
+      end
     end
   end
 
   def down
-    if @question.user != current_user
-      if status == 'positive'
-        cancel_vote
+    if current_user.author_of?(@question)
+      errors_user
 
-      elsif status == 'negativ'
-        errors_vote
+    else
+      if @question.votes.exists?
 
+        if @question.votes[0].value == 1
+          cancel_vote
+
+        elsif @question.votes[0].value == -1
+          errors_vote
+        end
       else
-        create_vote(false)
+        create_vote(-1)
         respond_create
       end
-    else
-      errors_user
     end
   end
 
@@ -88,17 +94,14 @@ class QuestionsController < ApplicationController
   def errors_user
     respond_to do |format|
       format.json do
-        @question.errors.add(:user, :invalid, message: "You can not vote for self question")
+        @question.errors.add(:user, :invalid, message: "You can not vote for self answer")
         render json: @question.errors.full_messages, status: :unprocessable_entity
       end
     end
   end
 
-  def create_vote(positive_value)
-    Question.transaction do
-      current_user.votes.new(positive: positive_value)
-      @question.votes << current_user.votes.last
-    end
+  def create_vote(value_vote)
+    @question.votes.create(user: current_user, value: value_vote)
 
     update_rating(@question)
   end
@@ -117,6 +120,7 @@ class QuestionsController < ApplicationController
 
   def cancel_vote
     @question.votes.find_by(user: current_user).destroy
+
     update_rating(@question)
 
     respond_to do |format|
@@ -130,10 +134,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def status
-    @question.status_vote(current_user)
-  end
-
   def errors_vote
     respond_to do |format|
       format.json do
@@ -144,10 +144,7 @@ class QuestionsController < ApplicationController
   end
 
   def update_rating(question)
-    positive_votes = question.votes.where(positive: true).count
-    negative_votes = question.votes.where(positive: false).count
-
-    rating = positive_votes - negative_votes
+    rating = question.votes.sum(:value)
 
     @question.rating = rating
   end
