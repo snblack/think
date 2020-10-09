@@ -5,4 +5,17 @@ $(document).on('turbolinks:load', function(){
     var questionId = $(this).data('questionId');
     $('form#edit-question-' + questionId).removeClass('hidden');
   });
+
+  $('p.vote')
+      .on('ajax:success', function(e) {
+        var question = e.detail[0]
+        $('.question-errors').html('');
+        $('p.rating').html('<p>' + question.rating + '</p>')
+      })
+      .on('ajax:error', function (e) {
+        var errors = e.detail[0];
+        $.each(errors, function(index, value) {
+          $('.question-errors').html('<p>' + value + '</p>');
+      })
+  });
 });

@@ -1,9 +1,9 @@
 h1= 'List of questions'
 
-.questions
-  =render @questions
-
 .question-errors
   = render 'shared/errors', resource: @question
+
+.questions
+  =render @questions
 
 p= link_to 'Ask question', new_question_path

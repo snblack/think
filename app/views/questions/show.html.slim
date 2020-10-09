@@ -1,15 +1,16 @@
+.question-errors
+  = render 'shared/errors', resource: @question
+
 .question
   =render 'questions/question_show'
+
+.answer-errors
+  = render 'shared/errors', resource: @answer
 
 br
 .answers
   =render @question.answers.order_by_best
 
-.question-errors
-  = render 'shared/errors', resource: @question
-
-.answer-errors
-  = render 'shared/errors', resource: @answer
 
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
   p

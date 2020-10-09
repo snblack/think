@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   has_many :answers, dependent: :delete_all
   has_many :links, dependent: :delete_all, as: :linkable
+  has_many :votes, dependent: :delete_all, as: :votable
   has_one :reward, dependent: :delete
 
   belongs_to :user
@@ -9,5 +10,15 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
-  validates :title, :body, presence: true
+  validates :title, :body, :rating, presence: true
+
+  def status_vote(user)
+    status = self.votes.find_by(user: user)
+
+    if status&.positive == true
+      'positive'
+    elsif status&.positive == false
+      'negativ'
+    end
+  end
 end

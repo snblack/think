@@ -10,8 +10,15 @@ Rails.application.routes.draw do
     resources :answers, shallow: true do
       member do
         put 'mark_as_best'
+        put 'up'
+        put 'down'
       end
     end
+    member do
+      put 'up'
+      put 'down'
+    end
+
   end
 
 end

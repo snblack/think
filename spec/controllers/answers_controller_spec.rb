@@ -125,6 +125,22 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    describe 'PUT #up' do
+      before { login(user) }
+
+      context 'Not author' do
+        it 'saves a new vote in the database' do
+          expect { put :up, params: { answer: answer.id} }.to change(Vote, :count).by(1)
+        end
+      end
+
+      context 'Author' do
+        it 'does not save the question' do
+          expect { put :up, params: { answer: answer.id, user: user} }.to_not change(Vote, :count)
+        end
+      end
+    end
   end
 
 end

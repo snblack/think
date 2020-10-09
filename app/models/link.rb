@@ -14,6 +14,4 @@ class Link < ApplicationRecord
     uri = URI::parse(self.url + '.js')
     ERB::Util.html_escape(uri)
   end
-
-
 end
