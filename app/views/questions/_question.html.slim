@@ -2,6 +2,6 @@
   p= '=============='
   p= question.title
   p= link_to 'Show', question_path(question)
-  p[class='vote_question']= link_to 'Up', up_question_path(question), method: :put, remote: true
-  p[class='rating_question']= question.rating
-  p[class='vote_question']= link_to 'Down',  down_question_path(question), method: :put, remote: true
+  p[class='vote_question up']= link_to 'Up', up_question_path(question), method: :put, remote: true
+  p[class="rating_question_#{question.id}"]= question.rating
+  p[class='vote_question down']= link_to 'Down',  down_question_path(question), method: :put, remote: true

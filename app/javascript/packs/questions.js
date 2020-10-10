@@ -10,7 +10,7 @@ $(document).on('turbolinks:load', function(){
       .on('ajax:success', function(e) {
         var question = e.detail[0]
         $('.question-errors').html('');
-        $('p.rating_question').html('<p>' + question.rating + '</p>')
+        $('p.rating_question_' + question.id).html('<p>' + question.rating + '</p>')
       })
       .on('ajax:error', function (e) {
         var errors = e.detail[0];

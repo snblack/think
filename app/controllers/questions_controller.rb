@@ -49,104 +49,26 @@ class QuestionsController < ApplicationController
   end
 
   def up
-    if current_user.author_of?(@question)
-      errors_user
-
-    else
-      if @question.votes.exists?
-
-        if @question.votes[0].value == 1
-          errors_vote
-
-        elsif @question.votes[0].value == -1
-          cancel_vote
-        end
-
-      else
-        create_vote(1)
-        respond_create
-      end
-    end
+    vote(1)
   end
 
   def down
-    if current_user.author_of?(@question)
-      errors_user
+    vote(-1)
+  end
 
-    else
-      if @question.votes.exists?
+  def vote(value)
+    return anauthorized! if current_user.author_of?(@question)
 
-        if @question.votes[0].value == 1
-          cancel_vote
-
-        elsif @question.votes[0].value == -1
-          errors_vote
-        end
-      else
-        create_vote(-1)
-        respond_create
-      end
-    end
+    @question.votes.find_by(user: current_user).destroy if @question.votes.exists?
+    @question.votes.create(user: current_user, value: value)
+    @question.update(rating: @question.votes.sum(:value))
+    render json: @question
   end
 
   private
 
-  def errors_user
-    respond_to do |format|
-      format.json do
-        @question.errors.add(:user, :invalid, message: "You can not vote for self answer")
-        render json: @question.errors.full_messages, status: :unprocessable_entity
-      end
-    end
-  end
-
-  def create_vote(value_vote)
-    @question.votes.create(user: current_user, value: value_vote)
-
-    update_rating(@question)
-  end
-
-  def respond_create
-    respond_to do |format|
-      if @question.save
-        format.json { render json: @question }
-      else
-        format.json do
-          render json: @question.errors.full_messages, status: :unprocessable_entity
-        end
-      end
-    end
-  end
-
-  def cancel_vote
-    @question.votes.find_by(user: current_user).destroy
-
-    update_rating(@question)
-
-    respond_to do |format|
-      if @question.save
-        format.json { render json: @question }
-      else
-        format.json do
-          render json: @question.errors.full_messages, status: :unprocessable_entity
-        end
-      end
-    end
-  end
-
-  def errors_vote
-    respond_to do |format|
-      format.json do
-        @question.errors.add(:rating, :invalid, message: "You voted early")
-        render json: @question.errors.full_messages, status: :unprocessable_entity
-      end
-    end
-  end
-
-  def update_rating(question)
-    rating = question.votes.sum(:value)
-
-    @question.rating = rating
+  def anauthorized!
+    render json: { error: :unauthorized }
   end
 
   def find_question
