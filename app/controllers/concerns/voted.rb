@@ -25,7 +25,7 @@ module Voted
   end
 
   def anauthorized!
-    render json: { error: :unauthorized }
+    render json: { error: :unauthorized }, status: :unprocessable_entity
   end
 
   private
