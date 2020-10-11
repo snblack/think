@@ -30,13 +30,7 @@ feature 'user can vote for question/answer' do
           expect(page).to have_content '1'
         end
 
-        click_on 'Up'
-
-        within '.question' do
-          expect(page).to have_content '1'
-        end
-
-        expect(page).to have_content 'Rating You voted early'
+        expect(page).to_not have_link 'Up'
       end
 
       scenario 'User can cancel vote and vote again for question', js: true do
@@ -49,7 +43,7 @@ feature 'user can vote for question/answer' do
         click_on 'Down'
 
         within '.question' do
-          expect(page).to have_content '0'
+          expect(page).to have_content '-1'
         end
 
         click_on 'Up'
@@ -83,7 +77,7 @@ feature 'user can vote for question/answer' do
           expect(page).to have_content '1'
         end
 
-        click_on 'Up'
+        expect(page).to_not have_link 'Up'
 
         within '.questions' do
           expect(page).to have_content '1'
@@ -100,7 +94,7 @@ feature 'user can vote for question/answer' do
         click_on 'Down'
 
         within '.questions' do
-          expect(page).to have_content '0'
+          expect(page).to have_content '-1'
         end
 
         click_on 'Up'
@@ -125,7 +119,7 @@ feature 'user can vote for question/answer' do
       scenario 'User can not vote for self question', js: true do
         click_on 'Up'
 
-        within '.rating_question' do
+        within '.questions' do
           expect(page).to have_content '0'
         end
       end
@@ -140,7 +134,7 @@ feature 'user can vote for question/answer' do
 
       scenario 'User can not vote for self question', js: true do
         click_on 'Up'
-
+        save_and_open_page
         within '.questions' do
           expect(page).to have_content '0'
         end

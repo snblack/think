@@ -2,12 +2,12 @@ div class="answer-inner-#{answer.id}"
   -if answer.persisted?
     p{class="answer", data-answer-id=answer.id}= answer.body
 
-    -if answer.votes.find_by(user: current_user).value == 1
+    -if answer.votes.find_by(user: current_user)&.value == 1
       p[class='vote_answer_up id-#{answer.id} hidden']= link_to 'Up', up_answer_path(answer), method: :put, remote: true
     -else
       p[class='vote_answer_up id-#{answer.id}']= link_to 'Up', up_answer_path(answer), method: :put, remote: true
     p[class="rating_answer_#{answer.id}"]= answer.rating
-    -if answer.votes.find_by(user: current_user).value == -1
+    -if answer.votes.find_by(user: current_user)&.value == -1
       p[class='vote_answer_down id-#{answer.id} hidden']= link_to 'Down',  down_answer_path(answer), method: :put, remote: true
     -else
       p[class='vote_answer_down id-#{answer.id}']= link_to 'Down',  down_answer_path(answer), method: :put, remote: true
@@ -23,13 +23,14 @@ div class="answer-inner-#{answer.id}"
                       file_path(file),
                       method: :delete
 
-  -if current_user&.author_of?(@question)
-    -if answer.best?
-      p{class='choosed', data-answer-id=answer.id}= 'the best answer'
-      p= @reward.name
-      p= image_tag(@reward.file, size: "100x100")
-    -else
-      p= link_to 'Choose answer', mark_as_best_answer_path(answer), method: :put, class: 'best-answer-link', data: { answer_id: answer.id }, remote: true
+  -if @question.reward != nil
+    -if current_user&.author_of?(@question)
+      -if answer.best?
+        p{class='choosed', data-answer-id=answer.id}= 'the best answer'
+        p= @reward.name
+        p= image_tag(@reward.file, size: "100x100")
+      -else
+        p= link_to 'Choose answer', mark_as_best_answer_path(answer), method: :put, class: 'best-answer-link', data: { answer_id: answer.id }, remote: true
 
   -if current_user&.author_of?(answer)
     p= link_to 'Delete', answer_path(answer), method: :delete, data: { answer_id: answer.id, confirm: 'Are you Sure?', remote: true }

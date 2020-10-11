@@ -12,13 +12,4 @@ class Question < ApplicationRecord
 
   validates :title, :body, :rating, presence: true
 
-  def status_vote(user)
-    status = self.votes.find_by(user: user)
-
-    if status&.positive == true
-      'positive'
-    elsif status&.positive == false
-      'negativ'
-    end
-  end
 end

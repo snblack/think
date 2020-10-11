@@ -27,8 +27,7 @@ feature 'user can vote for question/answer' do
       within '.answers' do
         click_on 'Up'
         expect(page).to have_content '1'
-        click_on 'Up'
-        expect(page).to have_content '1'
+        expect(page).to_not have_link 'Up'
       end
     end
 
@@ -37,7 +36,7 @@ feature 'user can vote for question/answer' do
         click_on 'Up'
         expect(page).to have_content '1'
         click_on 'Down'
-        expect(page).to have_content '0'
+        expect(page).to have_content '-1'
         click_on 'Up'
         expect(page).to have_content '1'
       end
