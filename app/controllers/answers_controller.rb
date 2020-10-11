@@ -2,6 +2,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: %i[update destroy mark_as_best up down]
 
+  include Voted
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
@@ -29,28 +31,7 @@ class AnswersController < ApplicationController
     end
   end
 
-  def up
-    vote(1)
-  end
-
-  def down
-    vote(-1)
-  end
-
-  def vote(value)
-    return anauthorized! if current_user.author_of?(@answer)
-
-    @answer.votes.find_by(user: current_user).destroy if @answer.votes.exists?
-    @answer.votes.create(user: current_user, value: value)
-    @answer.update(rating: @answer.votes.sum(:value))
-    render json: @answer
-  end
-
   private
-
-  def anauthorized!
-    render json: { error: :unauthorized }
-  end
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])

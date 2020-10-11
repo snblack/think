@@ -2,6 +2,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: %i[show update up down]
 
+  include Voted
+
   def index
     @questions = Question.all
   end
@@ -48,28 +50,7 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def up
-    vote(1)
-  end
-
-  def down
-    vote(-1)
-  end
-
-  def vote(value)
-    return anauthorized! if current_user.author_of?(@question)
-
-    @question.votes.find_by(user: current_user).destroy if @question.votes.exists?
-    @question.votes.create(user: current_user, value: value)
-    @question.update(rating: @question.votes.sum(:value))
-    render json: @question
-  end
-
   private
-
-  def anauthorized!
-    render json: { error: :unauthorized }
-  end
 
   def find_question
     @question = Question.with_attached_files.find(params[:id])
