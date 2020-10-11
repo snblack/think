@@ -134,7 +134,7 @@ feature 'user can vote for question/answer' do
 
       scenario 'User can not vote for self question', js: true do
         click_on 'Up'
-        save_and_open_page
+  
         within '.questions' do
           expect(page).to have_content '0'
         end
