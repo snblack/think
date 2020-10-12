@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature 'user can vote for question/answer' do
+feature 'user can vote for answer' do
   given!(:user) { create(:user) }
   given!(:user2) { create(:user) }
   given!(:self_question) { create(:question, user: user) }

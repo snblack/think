@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature 'user can vote for question/answer' do
+feature 'user can vote for question' do
   given!(:user) { create(:user) }
   given!(:user2) { create(:user) }
   given!(:question) { create(:question, user: user2) }
@@ -134,7 +134,7 @@ feature 'user can vote for question/answer' do
 
       scenario 'User can not vote for self question', js: true do
         click_on 'Up'
-  
+
         within '.questions' do
           expect(page).to have_content '0'
         end

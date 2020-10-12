@@ -9,7 +9,7 @@ class Answer < ApplicationRecord
 
   scope :order_by_best, -> {order(best: :desc)}
 
-  validates :body, :rating, presence: true
+  validates :body, presence: true
 
   def choose_best
     Answer.transaction do
