@@ -6,9 +6,6 @@ RSpec.describe RewardsController, type: :controller do
   let!(:user) { create(:user) }
   let!(:question) { create(:question) }
 
-  # let!(:reward) { create(:reward, user: user, question: question) }
-  # let!(:reward) { create(:reward, user: user, question: question) }
-
   describe 'GET #index' do
     let(:rewards) {create_list(:reward, 3, user: user, question:question)}
 

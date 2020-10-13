@@ -1,6 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_answer, only: %i[update destroy mark_as_best]
+  before_action :find_answer, only: %i[update destroy mark_as_best up down]
+
+  include Voted
 
   def create
     @question = Question.find(params[:question_id])

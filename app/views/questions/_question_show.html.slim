@@ -1,5 +1,11 @@
 h1= @question.title
 p= @question.body
+
+p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true
+p[class="rating_question_#{question.id}"]= question.rating
+p[class='vote_question_down id-#{question.id}']= link_to 'Down',  down_question_path(question), method: :put, remote: true
+
+
 -if @question.reward&.persisted?
   p= @reward.name
   p= link_to @reward.file.filename.to_s, url_for(@reward.file)
