@@ -21,6 +21,7 @@ module Voted
     @votable.votes.find_by(user: current_user).destroy if @votable.votes.exists?
     @votable.votes.create(user: current_user, value: value)
     @votable.update(rating: @votable.votes.sum(:value))
+
     render json: @votable
   end
 
