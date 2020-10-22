@@ -10,6 +10,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
+    @comment_answer = @answer.comments.new
   end
 
   def update
@@ -36,15 +37,10 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    # ActionCable.server.broadcast(@question, @answer
-    #   ApplicationController.render(
-    #   partial: 'answers/answer',
-    #   locals: { question: @question, answer: @answer, current_user: current_user }
-    # ))
     AnswersChannel.broadcast_to(@question,
       ApplicationController.render(
         partial: 'answers/answer',
-        locals: { question: @question, answer: @answer, current_user: current_user }
+        locals: { question: @question, answer: @answer, current_user: current_user, comment_answer: @comment_answer }
       ))
   end
 

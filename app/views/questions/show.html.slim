@@ -24,8 +24,7 @@
 
 br
 .answers
-  =render @question.answers.order_by_best
-
+  =render @question.answers.order_by_best, comment_answer: @comment_answer
 
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
   p

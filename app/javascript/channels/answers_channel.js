@@ -7,5 +7,6 @@ consumer.subscriptions.create("AnswersChannel", {
 
   received(data) {
     $('.answers').append(data);
+    $('.new-answer #answer_body').val('');
   }
 });

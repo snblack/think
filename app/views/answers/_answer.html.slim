@@ -35,14 +35,14 @@ div class="answer-inner-#{answer.id}"
     .comments
       =render answer.comments
 
-    -if user_signed_in?
-      = form_with model: [answer, @comment_answer], class: 'new-comment' do |f|
-        p
-        = f.label :body, 'Comment'
-        p
-        = f.text_area :body
-        p
-        = f.submit 'add comment'
+    / -if user_signed_in?
+    = form_with model: [answer, comment_answer], class: 'new-comment' do |f|
+      p
+      = f.label :body, 'Comment'
+      p
+      = f.text_area :body
+      p
+      = f.submit 'add comment'
     = '====================='
 
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
