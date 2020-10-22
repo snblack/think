@@ -1,4 +1,4 @@
-h1= @question.title
+h1[class="title_question", id="#{question.id}"]= @question.title
 p= @question.body
 
 p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true

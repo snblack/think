@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       put 'down'
     end
   end
+  concern :commentable do
+    resources :comments, only: :create
+  end
 
   resources :files, only: [:destroy]
   resources :links, only: [:destroy]
@@ -15,14 +18,16 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, shallow: true do
+      concerns :commentable
       concerns :votable
       member do
         put 'mark_as_best'
       end
     end
+    concerns :commentable
     concerns :votable
   end
 
-
+  mount ActionCable.server => '/cable'
 
 end
