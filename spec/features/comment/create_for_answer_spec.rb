@@ -9,7 +9,7 @@ feature 'user can add comment for answer' do
     sign_in(user)
     visit question_path(question)
 
-    within '.answer-comments' do
+    within ".answer-comments-#{answer.id}" do
       fill_in 'Comment', with: 'My comment'
       click_on 'add comment'
     end
@@ -20,7 +20,7 @@ feature 'user can add comment for answer' do
   scenario 'Unauthenticated user tries add comment to answer', js: true do
     visit question_path(question)
 
-    within '.answer-comments' do
+    within ".answer-comments-#{answer.id}" do
       expect(page).to_not have_link 'add comment'
     end
   end
@@ -37,7 +37,7 @@ feature 'user can add comment for answer' do
       end
 
       Capybara.using_session('user') do
-        within '.answer-comments' do
+        within ".answer-comments-#{answer.id}" do
           fill_in 'Comment', with: 'My comment'
           click_on 'add comment'
         end
