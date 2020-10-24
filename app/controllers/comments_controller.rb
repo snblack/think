@@ -14,11 +14,9 @@ class CommentsController < ApplicationController
   def parent
     if params[:question_id]
       question = Question.find(params[:question_id])
-      gon.question_id = question.id
       return question
     else params[:answer_id]
       answer = Answer.find(params[:answer_id])
-      gon.answer_id = answer.id
       return answer
     end
   end

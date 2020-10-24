@@ -6,6 +6,6 @@ environment.plugins.prepend('Provide',
     $: 'jquery/src/jquery',
     jQuery: 'jquery/src/jquery'
   })
-)
+);
 
 module.exports = environment

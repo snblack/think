@@ -18,14 +18,12 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, shallow: true do
-      concerns :commentable
-      concerns :votable
+      concerns [:commentable, :votable]
       member do
         put 'mark_as_best'
       end
     end
-    concerns :commentable
-    concerns :votable
+    concerns [:commentable, :votable]
   end
 
   mount ActionCable.server => '/cable'

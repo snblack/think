@@ -79,6 +79,11 @@ feature 'user can create answer for question', %q{
 
         Capybara.using_session('guest') do
           expect(page).to have_content 'answer test'
+          within '.answers' do
+            expect(page).to_not have_link 'Delete'
+            expect(page).to_not have_link 'Edit'
+          end
+
         end
       end
     end

@@ -37,11 +37,7 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    AnswersChannel.broadcast_to(@question,
-      ApplicationController.render(
-        partial: 'answers/answer',
-        locals: { question: @question, answer: @answer, current_user: current_user, comment_answer: @comment_answer }
-      ))
+    AnswersChannel.broadcast_to(@question, @answer)
   end
 
   def find_answer
