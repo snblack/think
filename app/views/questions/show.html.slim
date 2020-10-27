@@ -4,13 +4,27 @@
 .question
   =render 'questions/question_show'
 
+
+= '=======Comment======='
+.question-comments
+  .comments
+    =render @question.comments
+
+  -if user_signed_in?
+    = form_with model: [@question, @comment_question], class: 'new-comment' do |f|
+      p
+      = f.label :body, 'Comment'
+      p
+      = f.text_area :body
+      p
+      = f.submit 'add comment'
+  = '====================='
 .answer-errors
   = render 'shared/errors', resource: @answer
 
 br
 .answers
-  =render @question.answers.order_by_best
-
+  =render @question.answers.order_by_best, comment_answer: @comment_answer
 
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
   p

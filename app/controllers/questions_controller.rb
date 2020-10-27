@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: %i[show update up down]
+  after_action :publish_question, only: [:create]
 
   include Voted
 
@@ -12,6 +13,8 @@ class QuestionsController < ApplicationController
     @reward = @question.reward
     @answer = @question.answers.new
     @answer.links.new
+    @comment_question = @question.comments.new
+    @comment_answer = @answer.comments.new
   end
 
   def new
@@ -54,10 +57,22 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.with_attached_files.find(params[:id])
+    gon.question_id = @question.id
   end
 
   def question
     @question ||= params[:id] ? Question.find(params[:id]) : Question.new
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: @question }
+      )
+    )
   end
 
   helper_method :question
@@ -68,6 +83,5 @@ class QuestionsController < ApplicationController
                                     reward_attributes: [:name, :file])
 
   end
-
 
 end

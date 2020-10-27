@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: %i[update destroy mark_as_best up down]
+  after_action :publish_answer, only: [:create]
 
   include Voted
 
@@ -9,6 +10,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
+    @comment_answer = @answer.comments.new
   end
 
   def update
@@ -32,6 +34,11 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return if @answer.errors.any?
+    AnswersChannel.broadcast_to(@question, @answer)
+  end
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])

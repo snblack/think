@@ -18,6 +18,8 @@ gem "slim-rails"
 gem 'jquery-rails'
 gem "aws-sdk-s3", require: false
 gem "octokit", "~> 4.0"
+gem 'gon'
+gem 'handlebars-source', '~> 4.7', '>= 4.7.6'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
