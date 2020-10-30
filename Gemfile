@@ -12,6 +12,9 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'devise'
 gem "cocoon"
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-facebook'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem "slim-rails"

@@ -31,6 +31,7 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  config.include OmniauthMacros
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
@@ -67,3 +68,5 @@ RSpec.configure do |config|
     end
   end
 end
+
+OmniAuth.config.test_mode = true
