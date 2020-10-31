@@ -2,4 +2,5 @@
   = link_to 'Logout', destroy_user_session_path, method: :delete
 - else
   = link_to 'Login',  new_user_session_path
-p= link_to 'My Rewards', rewards_path
+-if can? :create, Answer
+  p= link_to 'My Rewards', rewards_path

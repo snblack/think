@@ -1,4 +1,6 @@
 class FilesController < ApplicationController
+  authorize_resource
+  
   def destroy
     file = ActiveStorage::Attachment.find(params[:id])
     record = file.record
