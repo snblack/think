@@ -39,12 +39,12 @@ describe Ability, type: :model do
     it { should be_able_to :up, Answer }
     it { should be_able_to :down, Answer }
 
-    it { should be_able_to :update, create(:question, user: user) }
+    it { should be_able_to :update, question_with_user }
     it { should_not be_able_to :update, create(:question, user: other) }
     it { should be_able_to :update, create(:answer, question: question, user: user) }
     it { should_not be_able_to :update, create(:answer, question: question, user: other) }
 
-    it { should be_able_to :destroy, create(:question, user: user) }
+    it { should be_able_to :destroy, question_with_user }
     it { should_not be_able_to :destroy, create(:question, user: other) }
     it { should be_able_to :destroy, create(:answer, question: question, user: user) }
     it { should_not be_able_to :destroy, create(:answer, question: question, user: other) }
