@@ -15,6 +15,7 @@ gem "cocoon"
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-facebook'
+gem 'cancancan'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem "slim-rails"
