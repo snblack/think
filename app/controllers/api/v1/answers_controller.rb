@@ -19,23 +19,23 @@ class Api::V1::AnswersController < Api::V1::BaseController
     if @answer.save
       render json: @answer
     else
-      render json: @answer.errors.full_messages
+      render json: @answer.errors.full_messages, status: :unprocessable_entity
     end
   end
 
   def update
-    if current_resource_owner.author_of?(@answer)
-      @answer.update(answer_params)
+    if @answer.update(answer_params)
+      render json: @answer
+    else
+      render json: @answer.errors.full_messages, status: :unprocessable_entity
     end
-
-    render json: @answer
   end
 
   def destroy
-    if current_resource_owner.author_of?(@answer)
-      if @answer.destroy
-        render json: 'Answer was deleted'
-      end
+    if @answer.destroy
+      render json: 'Answer was deleted'
+    else
+      render json: @answer.errors.full_messages, status: :unprocessable_entity
     end
   end
 
