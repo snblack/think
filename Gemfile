@@ -24,6 +24,9 @@ gem "aws-sdk-s3", require: false
 gem "octokit", "~> 4.0"
 gem 'gon'
 gem 'handlebars-source', '~> 4.7', '>= 4.7.6'
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
