@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Questions API', type: :request do
+describe 'Answers API', type: :request do
   let(:headers) {{"ACCEPT" => 'application/json'}}
 
   describe 'GET /api/v1/questions/:question_id/answers' do
@@ -115,7 +115,7 @@ describe 'Questions API', type: :request do
   describe 'PATCH /api/v1/answers/:id' do
 
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
-    let(:user) { create(:user) }
+    let!(:user) { create(:user) }
     let!(:question) { create(:question) }
     let!(:answer) { create(:answer, question: question, user: user) }
 
@@ -129,7 +129,8 @@ describe 'Questions API', type: :request do
       before {patch api_path, params: {
         access_token: access_token.token,
         answer: {
-          body: 'Body edited'
+          body: 'Body edited',
+          user_id: user.id
         }
         }, headers: headers}
 

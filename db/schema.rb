@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_04_082207) do
+ActiveRecord::Schema.define(version: 2020_11_13_210911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,12 @@ ActiveRecord::Schema.define(version: 2020_11_04_082207) do
     t.integer "rating", default: 0, null: false
     t.index ["rating"], name: "index_rating"
     t.index ["user_id"], name: "index_questions_on_user_id"
+  end
+
+  create_table "questions_users", id: false, force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "question_id"], name: "index_questions_users_on_user_id_and_question_id", unique: true
   end
 
   create_table "rewards", force: :cascade do |t|

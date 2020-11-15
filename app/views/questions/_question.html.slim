@@ -3,8 +3,7 @@
   p= question.title
   p= link_to 'Show', question_path(question)
 
-  -if can? :create, Vote
-    p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true
+
+  p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true
   p[class="rating_question_#{question.id}"]= question.rating
-  -if can? :create, Vote
-    p[class='vote_question_down id-#{question.id}']= link_to 'Down',  down_question_path(question), method: :put, remote: true
+  p[class='vote_question_down id-#{question.id}']= link_to 'Down',  down_question_path(question), method: :put, remote: true

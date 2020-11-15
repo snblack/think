@@ -33,4 +33,28 @@ $(document).on('turbolinks:load', function(){
           $('.question-errors').html('<p>' + value + '</p>');
       })
   });
+
+  $('.subscribe')
+      .on('ajax:success', function(e) {
+        $('.subscribe').addClass('hidden')
+        $('.unsubscribe').removeClass('hidden')
+      })
+      .on('ajax:error', function (e) {
+        var errors = e.detail[0];
+        $.each(errors, function(index, value) {
+          $('.question-errors').html('<p>' + value + '</p>');
+      })
+  });
+
+  $('.unsubscribe')
+      .on('ajax:success', function(e) {
+        $('.unsubscribe').addClass('hidden')
+        $('.subscribe').removeClass('hidden')
+      })
+      .on('ajax:error', function (e) {
+        var errors = e.detail[0];
+        $.each(errors, function(index, value) {
+          $('.question-errors').html('<p>' + value + '</p>');
+      })
+  });
 });

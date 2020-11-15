@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   has_many :comments, dependent: :delete_all, as: :commentable
   has_many :votes, dependent: :delete_all, as: :votable
   has_one :reward, dependent: :delete
+  has_and_belongs_to_many :followers, class_name: "User"
 
   belongs_to :user
   has_many_attached :files
@@ -12,5 +13,19 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+  # after_create :calculate_reputation
+
+  after_create :add_to_followers
+
+  private
+
+  def add_to_followers
+    self.followers << self.user
+  end
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
+  end
 
 end

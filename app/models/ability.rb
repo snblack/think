@@ -31,5 +31,6 @@ class Ability
     can [:update, :destroy], [Question, Answer], user_id: user.id
     can [:destroy], [Link], linkable: { user: { id: user.id }}
     can [:destroy], [File], record: { user: { id: user.id }}
+    can [:subscribe, :unsubscribe], [Question]
   end
 end
