@@ -30,11 +30,9 @@ Rails.application.routes.draw do
         put 'mark_as_best'
       end
     end
+    resources :subscriptions, only: [:create]
 
-    member do
-      patch 'subscribe'
-      patch 'unsubscribe'
-    end
+    delete 'subscription', action: :destroy, controller: 'subscriptions'
 
     concerns [:commentable, :votable]
   end

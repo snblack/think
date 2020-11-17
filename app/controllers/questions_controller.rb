@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: %i[show update up down subscribe unsubscribe]
+  before_action :find_question, only: %i[show update up down]
   after_action :publish_question, only: [:create]
 
   authorize_resource
@@ -55,16 +55,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def subscribe
-    if !@question.followers.exists?(current_user.id)
-      @question.followers.push(current_user)
-    end
-  end
-
-  def unsubscribe
-    @question.followers.destroy(current_user)
-  end
-
   private
 
   def find_question
@@ -91,7 +81,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                    links_attributes: [:name, :url],
+                                    links_attributes: [:name, :url, :_destroy],
                                     reward_attributes: [:name, :file])
 
   end

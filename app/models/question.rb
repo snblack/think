@@ -4,7 +4,10 @@ class Question < ApplicationRecord
   has_many :comments, dependent: :delete_all, as: :commentable
   has_many :votes, dependent: :delete_all, as: :votable
   has_one :reward, dependent: :delete
-  has_and_belongs_to_many :followers, class_name: "User"
+
+  has_many :subscriptions
+  has_many :followers, class_name: 'User', through: :subscriptions
+
 
   belongs_to :user
   has_many_attached :files
@@ -13,6 +16,8 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+  scope :today, -> {where(created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)}
 
   # after_create :calculate_reputation
 
