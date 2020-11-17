@@ -1,7 +1,9 @@
 class SubscriptionsController < ApplicationController
-  authorize_resource
 
   before_action :find_question, only: %i[create destroy]
+  before_action :find_subscription, only: %i[destroy]
+
+  authorize_resource
 
   def create
     if !@question.followers.exists?(current_user.id)
@@ -10,8 +12,9 @@ class SubscriptionsController < ApplicationController
   end
 
   def destroy
-    @subscription = Subscription.find_by(user_id: current_user.id, question_id: @question.id)
-    @subscription.destroy
+    if @subscription&.persisted?
+      @subscription.destroy
+    end
   end
 
   private
@@ -19,6 +22,10 @@ class SubscriptionsController < ApplicationController
   def find_question
     @question = Question.find(params[:question_id])
     gon.question_id = @question.id
+  end
+
+  def find_subscription
+    @subscription = Subscription.find_by(user_id: current_user.id, question_id: @question.id)
   end
 
 end
