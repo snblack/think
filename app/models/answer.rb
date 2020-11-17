@@ -12,6 +12,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_create :notification_for_followers
+
   def choose_best
     Answer.transaction do
       question.answers.update_all(best: false)
@@ -21,4 +23,11 @@ class Answer < ApplicationRecord
     end
   end
 
+  private
+
+  def notification_for_followers
+    followers = self.question.followers.to_ary
+
+    NewAnswerJob.perform_later(self, followers)
+  end
 end

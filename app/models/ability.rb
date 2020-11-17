@@ -27,9 +27,11 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment, Vote]
     can [:up, :down], [Question, Answer]
-    can [:mark_as_best], [Answer], question: { user: { id: user.id } }
+    can [:mark_as_best], Answer, question: { user: { id: user.id } }
     can [:update, :destroy], [Question, Answer], user_id: user.id
-    can [:destroy], [Link], linkable: { user: { id: user.id }}
-    can [:destroy], [File], record: { user: { id: user.id }}
+    can [:destroy], Link, linkable: { user: { id: user.id }}
+    can [:destroy], File, record: { user: { id: user.id }}
+    can [:create], Subscription
+    can [:destroy], Subscription, user_id: user.id
   end
 end

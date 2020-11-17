@@ -1,6 +1,14 @@
 h1[class="title_question", id="#{question.id}"]= @question.title
 p= @question.body
 
+-if can? :create, Subscription
+  -if @question.followers.exists?(current_user.id)
+    p[class="unsubscribe"]= link_to 'Unsubscribe', question_subscription_path(@question), method: :delete, remote: true
+    p[class="subscribe hidden"]= link_to 'Subscribe', question_subscriptions_path(@question), method: :post, remote: true
+  -else
+    p[class="subscribe"]= link_to 'Subscribe', question_subscriptions_path(@question), method: :post, remote: true
+    p[class="unsubscribe hidden"]= link_to 'Unsubscribe', question_subscription_path(@question), method: :delete, remote: true
+
 -if can? :create, Vote
   p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true
 p[class="rating_question_#{question.id}"]= question.rating

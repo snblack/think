@@ -72,7 +72,7 @@ class QuestionsController < ApplicationController
       'questions',
       ApplicationController.render(
         partial: 'questions/question',
-        locals: { question: @question }
+        locals: { question: @question}
       )
     )
   end
@@ -81,7 +81,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [],
-                                    links_attributes: [:name, :url],
+                                    links_attributes: [:name, :url, :_destroy],
                                     reward_attributes: [:name, :file])
 
   end

@@ -12,6 +12,10 @@ class User < ApplicationRecord
   has_many :rewards
   has_many :votes
 
+  # has_and_belongs_to_many :subscribes, class_name: "Question"
+  has_many :subscribes
+  has_many :questions
+
   def author_of?(resource)
     self.id == resource.user_id
   end
