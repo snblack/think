@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "oauth_callbacks" }
   root to: "questions#index"
 
+  get 'search', action: :index, controller: 'searches'
+
   concern :votable do
     member do
       put 'up'
