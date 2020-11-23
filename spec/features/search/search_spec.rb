@@ -6,10 +6,12 @@ feature 'user can search question with parameters' do
   given!(:answer) { create(:answer, question: question) }
   given!(:comment) { create(:comment, commentable: question) }
 
-  scenario 'search question in all' do
+  background do
     sign_in(user)
     visit root_path
+  end
 
+  scenario 'search question in all' do
     fill_in 'Search', with: question.title
     select('All', from: 'where')
 
@@ -19,9 +21,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search answer in all' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: answer.body
     select('All', from: 'where')
 
@@ -31,9 +30,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search comment in all' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: comment.body
     select('All', from: 'where')
 
@@ -43,9 +39,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search user in all' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: user.name
     select('All', from: 'where')
 
@@ -55,9 +48,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search question in question' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: question.title
     select('Question', from: 'where')
 
@@ -67,9 +57,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search answer in answer' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: answer.body
     select('Answer', from: 'where')
 
@@ -79,9 +66,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search comment in comment' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: comment.body
     select('Comment', from: 'where')
 
@@ -91,9 +75,6 @@ feature 'user can search question with parameters' do
   end
 
   scenario 'search user in user' do
-    sign_in(user)
-    visit root_path
-
     fill_in 'Search', with: user.name
     select('User', from: 'where')
 
@@ -101,6 +82,5 @@ feature 'user can search question with parameters' do
 
     expect(page).to have_content(user.name)
   end
-
 
 end
