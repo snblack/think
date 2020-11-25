@@ -1,0 +1,10 @@
+h1= "Result of search"
+
+.finded_objects
+  - @issue.each do |object|
+    -if object.class == Question
+      p= "#{object.class} | " + object.title
+    -elsif object.class == Answer || object.class == Comment
+      p= "#{object.class} | " + object.body
+    -elsif object.class == User
+      p= "#{object.class} | " + object.name

@@ -3,6 +3,13 @@ h1= 'List of questions'
 .question-errors
   = render 'shared/errors', resource: @question
 
+.search
+  = form_with url: search_path, method: :get, local: true do |form|
+    = form.label :query, "Search for:"
+    = form.text_field :query
+    = form.select :where, ["All", "Question", "Answer", "Comment", 'User']
+    = form.submit "Search"
+
 .questions
   =render @questions
 

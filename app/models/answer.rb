@@ -1,4 +1,5 @@
 class Answer < ApplicationRecord
+  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
   belongs_to :question
   belongs_to :user
 
