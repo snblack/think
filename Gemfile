@@ -36,6 +36,7 @@ gem 'whenever', require: false
 #search
 gem 'mysql2'
 gem 'thinking-sphinx'
+gem 'mini_racer'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
