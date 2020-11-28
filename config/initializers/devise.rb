@@ -8,6 +8,7 @@
 #
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
+
 Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
@@ -271,9 +272,9 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-
+  logger.info "Processing the request..."
   config.omniauth :github,
-                  config.logger = Rails.env.to_sym,
+                  Rails.application.credentials[Rails.env.to_sym][:github][:app_id],
                   Rails.application.credentials[Rails.env.to_sym][:github][:app_secret],
                   scope: 'user:email, read:user'
 
