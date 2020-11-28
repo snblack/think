@@ -16,6 +16,7 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-facebook'
 gem 'cancancan'
+gem 'nokogiri'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem "slim-rails"
@@ -52,7 +53,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'capistrano', '~> 3.0'
   gem 'capistrano-rvm', require: false
-  gem "capistrano-rails", "~> 1.3", require: false
+  gem "capistrano-rails", "~> 1.6", require: false
+  gem 'capistrano-passenger', require: false
+  gem 'capistrano-sidekiq'
 end
 
 group :test do
