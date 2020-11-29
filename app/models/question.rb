@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+  # ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
   has_many :answers, dependent: :delete_all
   has_many :links, dependent: :delete_all, as: :linkable
