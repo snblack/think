@@ -1,4 +1,4 @@
-ThinkingSphinx::Index.define :question, with: :real_time do
+ThinkingSphinx::Index.define :question, with: :active_record do
   #fileds
   indexes title, sortable: true
   indexes body
