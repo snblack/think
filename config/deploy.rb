@@ -1,8 +1,6 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.14.1"
 
-require 'capistrano/passenger'
-
 set :init_system, :systemd
 set :service_unit_name, "sidekiq.service"
 
