@@ -55,7 +55,8 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem "capistrano-rails", "~> 1.6", require: false
   gem 'capistrano-passenger', require: false
-  gem 'capistrano-sidekiq'
+  gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :test do
