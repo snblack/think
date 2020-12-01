@@ -1,63 +1,64 @@
 div class="answer-inner-#{answer.id}"
   -if answer.persisted?
-    p{class="answer", data-answer-id=answer.id}= answer.body
+    -cache answer do
+      p{class="answer", data-answer-id=answer.id}= answer.body
 
-    -if can? :create, Vote
-      p[class='vote_answer_up id-#{answer.id}']= link_to 'Up', up_answer_path(answer), method: :put, remote: true
-    p[class="rating_answer_#{answer.id}"]= answer.rating
-    -if can? :create, Vote
-      p[class='vote_answer_down id-#{answer.id}']= link_to 'Down',  down_answer_path(answer), method: :put, remote: true
+      -if can? :create, Vote
+        p[class='vote_answer_up id-#{answer.id}']= link_to 'Up', up_answer_path(answer), method: :put, remote: true
+      p[class="rating_answer_#{answer.id}"]= answer.rating
+      -if can? :create, Vote
+        p[class='vote_answer_down id-#{answer.id}']= link_to 'Down',  down_answer_path(answer), method: :put, remote: true
 
-  .links
-    =render 'shared/link', resource: answer
+    .links
+      =render 'shared/link', resource: answer
 
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file)
-        -if current_user&.author_of?(answer)
-          p= link_to 'Delete image',
-                      file_path(file),
-                      method: :delete
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          p= link_to file.filename.to_s, url_for(file)
+          -if current_user&.author_of?(answer)
+            p= link_to 'Delete image',
+                        file_path(file),
+                        method: :delete
 
-  -if answer.question.reward != nil
-    -if current_user&.author_of?(answer.question)
-      -if answer.best?
-        p{class='choosed', data-answer-id=answer.id}= 'the best answer'
-        p= @reward.name
-        p= image_tag(@reward.file, size: "100x100")
-      -else
-        p= link_to 'Choose answer', mark_as_best_answer_path(answer), method: :put, class: 'best-answer-link', data: { answer_id: answer.id }, remote: true
+    -if answer.question.reward != nil
+      -if current_user&.author_of?(answer.question)
+        -if answer.best?
+          p{class='choosed', data-answer-id=answer.id}= 'the best answer'
+          p= @reward.name
+          p= image_tag(@reward.file, size: "100x100")
+        -else
+          p= link_to 'Choose answer', mark_as_best_answer_path(answer), method: :put, class: 'best-answer-link', data: { answer_id: answer.id }, remote: true
 
-  -if current_user&.author_of?(answer)
-    p= link_to 'Delete', answer_path(answer), method: :delete, data: { answer_id: answer.id, confirm: 'Are you Sure?', remote: true }
-    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    -if current_user&.author_of?(answer)
+      p= link_to 'Delete', answer_path(answer), method: :delete, data: { answer_id: answer.id, confirm: 'Are you Sure?', remote: true }
+      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-  / '=======Comment======='
-  div class="answer-comments-#{answer.id}"
-    .comments
-      =render answer.comments
+    / '=======Comment======='
+    div class="answer-comments-#{answer.id}"
+      .comments
+        =render answer.comments
 
-    / -if user_signed_in?
-    = form_with model: [answer, @comment_answer], class: 'new-comment' do |f|
-      p
-      = f.label :body, 'Comment'
-      p
-      = f.text_area :body
-      p
-      = f.submit 'add comment'
-    / '====================='
+      / -if user_signed_in?
+      = form_with model: [answer, @comment_answer], class: 'new-comment' do |f|
+        p
+        = f.label :body, 'Comment'
+        p
+        = f.text_area :body
+        p
+        = f.submit 'add comment'
+      / '====================='
 
-    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-      p
-      = f.label :body
-      = f.text_area :body
-      p
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
-      p Links:
-      p
-        = f.fields_for :links do |link|
-          = render 'questions/link_fields', f: link
-        .links
-          = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
-      p= f.submit 'Save'
+      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+        p
+        = f.label :body
+        = f.text_area :body
+        p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
+        p Links:
+        p
+          = f.fields_for :links do |link|
+            = render 'questions/link_fields', f: link
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
+        p= f.submit 'Save'

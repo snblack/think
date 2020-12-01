@@ -1,6 +1,6 @@
 class Answer < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
-  belongs_to :question
+  belongs_to :question, touch: true
   belongs_to :user
 
   has_many :links, dependent: :delete_all, as: :linkable
