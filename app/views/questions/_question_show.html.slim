@@ -1,56 +1,57 @@
-h1[class="title_question", id="#{question.id}"]= @question.title
-p= @question.body
+- cache @question do
+  h1[class="title_question", id="#{question.id}"]= @question.title
+  p= @question.body
 
--if can? :create, Subscription
-  -if @question.followers.exists?(current_user.id)
-    p[class="unsubscribe"]= link_to 'Unsubscribe', question_subscription_path(@question), method: :delete, remote: true
-    p[class="subscribe hidden"]= link_to 'Subscribe', question_subscriptions_path(@question), method: :post, remote: true
-  -else
-    p[class="subscribe"]= link_to 'Subscribe', question_subscriptions_path(@question), method: :post, remote: true
-    p[class="unsubscribe hidden"]= link_to 'Unsubscribe', question_subscription_path(@question), method: :delete, remote: true
+  -if can? :create, Subscription
+    -if @question.followers.exists?(current_user.id)
+      p[class="unsubscribe"]= link_to 'Unsubscribe', question_subscription_path(@question), method: :delete, remote: true
+      p[class="subscribe hidden"]= link_to 'Subscribe', question_subscriptions_path(@question), method: :post, remote: true
+    -else
+      p[class="subscribe"]= link_to 'Subscribe', question_subscriptions_path(@question), method: :post, remote: true
+      p[class="unsubscribe hidden"]= link_to 'Unsubscribe', question_subscription_path(@question), method: :delete, remote: true
 
--if can? :create, Vote
-  p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true
-p[class="rating_question_#{question.id}"]= question.rating
--if can? :create, Vote
-  p[class='vote_question_down id-#{question.id}']= link_to 'Down',  down_question_path(question), method: :put, remote: true
+  -if can? :create, Vote
+    p[class='vote_question_up id-#{question.id}']= link_to 'Up', up_question_path(question), method: :put, remote: true
+  p[class="rating_question_#{question.id}"]= question.rating
+  -if can? :create, Vote
+    p[class='vote_question_down id-#{question.id}']= link_to 'Down',  down_question_path(question), method: :put, remote: true
 
 
--if @question.reward&.persisted?
-  p= @reward.name
-  p= link_to @reward.file.filename.to_s, url_for(@reward.file)
-  = image_tag(@reward.file, size: "30x30")
+  -if @question.reward&.persisted?
+    p= @reward.name
+    p= link_to @reward.file.filename.to_s, url_for(@reward.file)
+    = image_tag(@reward.file, size: "30x30")
 
-- if @question.files.attached?
-  - @question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file)
-    p= link_to 'Delete image',
-                file_path(file),
-                method: :delete
-.links
-  =render 'shared/link', resource: question
+  - if @question.files.attached?
+    - @question.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
+      p= link_to 'Delete image',
+                  file_path(file),
+                  method: :delete
+  .links
+    =render 'shared/link', resource: question
 
--if current_user&.author_of?(@question)
-  p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
-  p= link_to 'Delete',
-          question_path(question),
-          method: :delete
+  -if current_user&.author_of?(@question)
+    p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
+    p= link_to 'Delete',
+            question_path(question),
+            method: :delete
 
-= form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
-  p
-  = f.label :title
-  = f.text_field :title
-  p
-  = f.label :body
-  = f.text_area :body
-  p
-  = f.label :files
-  = f.file_field :files, multiple: true, direct_upload: true
-  p Links:
-  p
-    = f.fields_for :links do |link|
-      = render 'link_fields', f: link
-    .links
-      = link_to_add_association 'add link', f, :links
+  = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
+    p
+    = f.label :title
+    = f.text_field :title
+    p
+    = f.label :body
+    = f.text_area :body
+    p
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |link|
+        = render 'link_fields', f: link
+      .links
+        = link_to_add_association 'add link', f, :links
 
-  p= f.submit 'Save'
+    p= f.submit 'Save'

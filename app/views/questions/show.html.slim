@@ -1,42 +1,43 @@
-.question-errors
-  = render 'shared/errors', resource: @question
+- cache @question do
+  .question-errors
+    = render 'shared/errors', resource: @question
 
-.question
-  =render 'questions/question_show'
+  .question
+    =render 'questions/question_show'
 
 
-= '=======Comment======='
-.question-comments
-  .comments
-    =render @question.comments
+  = '=======Comment======='
+  .question-comments
+    .comments
+      =render @question.comments
 
-  -if user_signed_in?
-    = form_with model: [@question, @comment_question], class: 'new-comment' do |f|
-      p
-      = f.label :body, 'Comment'
-      p
-      = f.text_area :body
-      p
-      = f.submit 'add comment'
-  = '====================='
-.answer-errors
-  = render 'shared/errors', resource: @answer
+    -if user_signed_in?
+      = form_with model: [@question, @comment_question], class: 'new-comment' do |f|
+        p
+        = f.label :body, 'Comment'
+        p
+        = f.text_area :body
+        p
+        = f.submit 'add comment'
+    = '====================='
+  .answer-errors
+    = render 'shared/errors', resource: @answer
 
-br
-.answers
-  =render @question.answers.order_by_best, comment_answer: @comment_answer
+  br
+  .answers
+    =render @question.answers.order_by_best, comment_answer: @comment_answer
 
-= form_with model: [@question, @answer], class: 'new-answer' do |f|
-  p
-  = f.label :body
-  = f.text_area :body
-  p
-  = f.label :files
-  = f.file_field :files, multiple: true, direct_upload: true
-  p Links:
-  p
-    = f.fields_for :links do |link|
-      = render 'link_fields', f: link
-    .links
-      = link_to_add_association 'add link', f, :links
-  p= f.submit 'Post your answer'
+  = form_with model: [@question, @answer], class: 'new-answer' do |f|
+    p
+    = f.label :body
+    = f.text_area :body
+    p
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |link|
+        = render 'link_fields', f: link
+      .links
+        = link_to_add_association 'add link', f, :links
+    p= f.submit 'Post your answer'
